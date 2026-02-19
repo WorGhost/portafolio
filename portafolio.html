@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gabriel Izaya | DevSecOps Portfolio (Dark Mode)</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            950: '#020617',
+                            900: '#0f172a',
+                            800: '#1e293b',
+                            700: '#334155',
+                        },
+                        brand: {
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                        },
+                        accent: {
+                            success: '#10b981',
+                            warning: '#f59e0b',
+                            danger: '#ef4444',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0ea5e9;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            max-height: 350px;
+        }
+
+        .nav-item.active {
+            background-color: rgba(14, 165, 233, 0.1);
+            color: #38bdf8;
+            border-right: 3px solid #0ea5e9;
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(51, 65, 85, 0.5);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+    </style>
+
+
+</head>
+
+<body class="bg-dark-950 text-slate-300 font-sans h-screen flex overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-dark-900 border-r border-dark-800 flex-col hidden md:flex z-20">
+        <div class="p-6 border-b border-dark-800">
+            <div class="flex items-center space-x-3 mb-1">
+                <div
+                    class="w-8 h-8 rounded bg-brand-500 flex items-center justify-center text-dark-950 font-bold tracking-tighter">
+                    GI</div>
+                <h1 class="font-bold text-white text-lg tracking-tight">Gabriel Izaya</h1>
+            </div>
+            <p class="text-[10px] text-brand-400 font-mono tracking-widest uppercase">DevSecOps Engineer</p>
+        </div>
+
+        <nav class="flex-1 py-6">
+            <ul class="space-y-1">
+                <li>
+                    <button onclick="navigate('profile')" id="nav-profile"
+                        class="nav-item active w-full text-left px-6 py-3 text-sm font-medium hover:bg-dark-800 transition-all flex items-center">
+                        <i class="fa-solid fa-terminal w-6 mr-2 opacity-70"></i> Perfil.md
+                    </button>
+                </li>
+                <li>
+                    <button onclick="navigate('skills')" id="nav-skills"
+                        class="nav-item w-full text-left px-6 py-3 text-sm font-medium hover:bg-dark-800 transition-all flex items-center">
+                        <i class="fa-solid fa-microchip w-6 mr-2 opacity-70"></i> Tech_Stack.json
+                    </button>
+                </li>
+                <li>
+                    <button onclick="navigate('experience')" id="nav-experience"
+                        class="nav-item w-full text-left px-6 py-3 text-sm font-medium hover:bg-dark-800 transition-all flex items-center">
+                        <i class="fa-solid fa-code-merge w-6 mr-2 opacity-70"></i> Experience.log
+                    </button>
+                </li>
+                <li>
+                    <button onclick="navigate('education')" id="nav-education"
+                        class="nav-item w-full text-left px-6 py-3 text-sm font-medium hover:bg-dark-800 transition-all flex items-center">
+                        <i class="fa-solid fa-graduation-cap w-6 mr-2 opacity-70"></i> Educación
+                    </button>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="p-6 bg-dark-950/50 border-t border-dark-800">
+            <h3 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4">Conectividad</h3>
+            <div class="space-y-3 text-xs">
+                <a href="mailto:gabrieldizaya@outlook.es"
+                    class="flex items-center text-slate-400 hover:text-brand-400 transition-colors"><i
+                        class="fa-solid fa-envelope w-5"></i> Email</a>
+                <a href="https://linkedin.com/in/gabriel-izaya-953225252" target="_blank"
+                    class="flex items-center text-slate-400 hover:text-brand-400 transition-colors"><i
+                        class="fa-brands fa-linkedin w-5"></i> LinkedIn</a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile Header -->
+    <div
+        class="md:hidden fixed top-0 w-full bg-dark-900 border-b border-dark-800 z-50 px-4 py-3 flex justify-between items-center">
+        <div class="font-bold text-white">Gabriel Izaya</div>
+        <button onclick="toggleMobileMenu()" class="text-brand-400"><i class="fa-solid fa-bars-staggered"></i></button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-dark-950 z-40 hidden flex-col pt-20 px-6 space-y-6">
+        <button onclick="navigate('profile'); toggleMobileMenu()"
+            class="text-xl font-bold text-white border-b border-dark-800 pb-2">Perfil</button>
+        <button onclick="navigate('skills'); toggleMobileMenu()"
+            class="text-xl font-bold text-white border-b border-dark-800 pb-2">Tech Stack</button>
+        <button onclick="navigate('experience'); toggleMobileMenu()"
+            class="text-xl font-bold text-white border-b border-dark-800 pb-2">Experiencia</button>
+        <button onclick="navigate('education'); toggleMobileMenu()"
+            class="text-xl font-bold text-white border-b border-dark-800 pb-2">Educación</button>
+    </div>
+
+    <!-- Content Area -->
+    <main class="flex-1 overflow-y-auto relative scroll-smooth bg-dark-950">
+
+        <!-- SECTION: PROFILE -->
+        <section id="section-profile" class="p-6 md:p-16 max-w-5xl mx-auto block animate-fade-in">
+            <div class="mb-12">
+                <div class="flex items-center space-x-2 mb-6">
+                    <span class="w-2 h-2 rounded-full bg-accent-success animate-pulse"></span>
+                    <span class="text-xs font-mono text-accent-success tracking-widest">SYSTEMS_ACTIVE // ONLINE</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter leading-none">
+                    Backend Engineer & <br><span class="text-brand-500">DevSecOps Specialist</span>
+                </h1>
+                <p class="text-lg md:text-xl text-slate-400 leading-relaxed max-w-3xl">
+                    Más de 5 años transformando arquitecturas legadas en <span
+                        class="text-white font-semibold">Microservicios escalables</span>. Experto en Java (Spring Boot)
+                    con un enfoque radical en la automatización y la seguridad de pipelines.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+                <div class="glass-card p-6 rounded-lg border-l-2 border-brand-500">
+                    <p class="text-[10px] font-mono text-slate-500 mb-2">RUNNING_TIME</p>
+                    <div class="text-2xl font-bold text-white">+5 Años</div>
+                    <p class="text-xs text-slate-400 mt-1">Experiencia Técnica</p>
+                </div>
+                <div class="glass-card p-6 rounded-lg border-l-2 border-accent-success">
+                    <p class="text-[10px] font-mono text-slate-500 mb-2">CORE_KERNEL</p>
+                    <div class="text-2xl font-bold text-white">Java Spring</div>
+                    <p class="text-xs text-slate-400 mt-1">Arquitectura Backend</p>
+                </div>
+                <div class="glass-card p-6 rounded-lg border-l-2 border-brand-400">
+                    <p class="text-[10px] font-mono text-slate-500 mb-2">AUTO_BOTS</p>
+                    <div class="text-2xl font-bold text-white">CI/CD & RPA</div>
+                    <p class="text-xs text-slate-400 mt-1">Efficiency Labs</p>
+                </div>
+            </div>
+
+            <div class="p-8 bg-dark-900/50 border border-dark-800 rounded-xl relative overflow-hidden group">
+                <div class="absolute -right-10 -bottom-10 opacity-5 group-hover:opacity-10 transition-opacity">
+                    <i class="fa-solid fa-code text-[12rem]"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-4">Manifesto del Candidato</h3>
+                <p class="text-slate-400 mb-6 text-sm leading-relaxed">
+                    Mi misión es eliminar la fricción entre el código y la producción. No solo escribo APIs; diseño los
+                    sistemas que aseguran que ese código sea seguro, probado y escalable. Si busca a alguien que
+                    entienda tanto el <span class="text-brand-400 italic">"Cómo se construye"</span> como el <span
+                        class="text-brand-400 italic">"Cómo se despliega"</span>, está en el repositorio correcto.
+                </p>
+                <div class="flex space-x-4">
+                    <button onclick="navigate('experience')"
+                        class="px-6 py-2 bg-brand-600 hover:bg-brand-500 text-dark-950 font-bold rounded transition-all transform active:scale-95">
+                        Analizar Impacto
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: SKILLS -->
+        <section id="section-skills" class="p-6 md:p-16 max-w-5xl mx-auto hidden animate-fade-in">
+            <h2 class="text-3xl font-bold text-white mb-8 tracking-tight">Tech Stack Spectrum</h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <div class="glass-card p-8 rounded-xl border border-dark-800">
+                    <h3 class="text-sm font-mono text-brand-400 mb-6 uppercase tracking-widest">Skill Distribution</h3>
+                    <div class="chart-container">
+                        <canvas id="skillsRadarChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <h4 class="text-xs font-mono text-slate-500 mb-3 uppercase tracking-tighter">Backend & Logic
+                        </h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span
+                                class="px-3 py-1 bg-dark-800 text-slate-200 rounded border border-dark-700 text-xs font-mono">Java
+                                17/21</span>
+                            <span
+                                class="px-3 py-1 bg-brand-500/10 text-brand-400 rounded border border-brand-500/30 text-xs font-mono">Spring_Boot</span>
+                            <span
+                                class="px-3 py-1 bg-dark-800 text-slate-200 rounded border border-dark-700 text-xs font-mono">Python</span>
+                            <span
+                                class="px-3 py-1 bg-dark-800 text-slate-200 rounded border border-dark-700 text-xs font-mono">Node.js</span>
+                            <span
+                                class="px-3 py-1 bg-dark-800 text-slate-200 rounded border border-dark-700 text-xs font-mono">Laravel</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-mono text-slate-500 mb-3 uppercase tracking-tighter">Infrastructure &
+                            Ops</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span
+                                class="px-3 py-1 bg-dark-800 text-slate-200 rounded border border-dark-700 text-xs font-mono">Docker</span>
+                            <span
+                                class="px-3 py-1 bg-dark-800 text-slate-200 rounded border border-dark-700 text-xs font-mono">Kubernetes</span>
+                            <span
+                                class="px-3 py-1 bg-accent-success/10 text-accent-success rounded border border-accent-success/30 text-xs font-mono">GitLab_CI/CD</span>
+                            <span
+                                class="px-3 py-1 bg-dark-800 text-slate-200 rounded border border-dark-700 text-xs font-mono">SonarQube</span>
+                            <span
+                                class="px-3 py-1 bg-dark-800 text-slate-200 rounded border border-dark-700 text-xs font-mono">Jenkins</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-mono text-slate-500 mb-3 uppercase tracking-tighter">Testing & Quality
+                        </h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span
+                                class="px-3 py-1 bg-dark-800 text-slate-200 rounded border border-dark-700 text-xs font-mono">JUnit_5</span>
+                            <span
+                                class="px-3 py-1 bg-dark-800 text-slate-200 rounded border border-dark-700 text-xs font-mono">Mockito</span>
+                            <span
+                                class="px-3 py-1 bg-dark-800 text-slate-200 rounded border border-dark-700 text-xs font-mono">TDD</span>
+                            <span
+                                class="px-3 py-1 bg-brand-500/10 text-brand-400 rounded border border-brand-500/30 text-xs font-mono">RPA_UiPath</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: EXPERIENCE -->
+        <section id="section-experience" class="p-6 md:p-16 max-w-6xl mx-auto hidden animate-fade-in">
+            <h2 class="text-3xl font-bold text-white mb-10 tracking-tight">Deployment History</h2>
+
+            <div class="flex flex-col lg:flex-row gap-10">
+                <div class="lg:w-1/3 space-y-3">
+                    <div onclick="showJob('itbc')" id="card-itbc"
+                        class="job-card cursor-pointer p-4 rounded bg-dark-900 border border-brand-500/50 hover:bg-dark-800 transition-all active-job shadow-[0_0_15px_rgba(14,165,233,0.1)]">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-white text-sm">ITBC GROUP</h3>
+                            <span
+                                class="text-[9px] px-1.5 py-0.5 bg-brand-500/20 text-brand-400 border border-brand-400/30 font-mono">LIVE</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400">Backend & DevSecOps</p>
+                    </div>
+
+                    <div onclick="showJob('amazing')" id="card-amazing"
+                        class="job-card cursor-pointer p-4 rounded bg-dark-900 border border-dark-800 opacity-60 hover:opacity-100 transition-all">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-white text-sm uppercase">Amazing Global</h3>
+                            <span
+                                class="text-[9px] px-1.5 py-0.5 bg-slate-800 text-slate-500 font-mono italic">Archived</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400">Software Dev & Automation</p>
+                    </div>
+                </div>
+
+                <div class="lg:w-2/3">
+                    <!-- ITBC View -->
+                    <div id="view-itbc" class="space-y-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="glass-card p-6 rounded-lg border border-dark-800">
+                                <h4 class="text-xs font-mono text-slate-500 mb-4 uppercase">Response Time Optimization
+                                </h4>
+                                <div class="chart-container h-48">
+                                    <canvas id="itbcLatencyChart"></canvas>
+                                </div>
+                                <p class="text-center text-[10px] text-accent-success font-mono mt-4 tracking-widest">
+                                    +60% PERFORMANCE_BOOST</p>
+                            </div>
+                            <div class="glass-card p-6 rounded-lg border border-dark-800">
+                                <h4 class="text-xs font-mono text-slate-500 mb-4 uppercase">Code Quality Analysis</h4>
+                                <div class="chart-container h-48">
+                                    <canvas id="itbcQualityChart"></canvas>
+                                </div>
+                                <p class="text-center text-[10px] text-brand-400 font-mono mt-4 tracking-widest">85%
+                                    TEST_COVERAGE</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-dark-900 p-6 rounded-lg border border-dark-800">
+                            <h4 class="text-white font-bold mb-4 flex items-center"><i
+                                    class="fa-solid fa-list-check mr-2 text-brand-400"></i> Logros Clave</h4>
+                            <ul class="space-y-4 text-sm text-slate-400 font-light">
+                                <li class="flex items-start"><span class="text-brand-400 mr-2">>></span> Migración total
+                                    de monolito a <span class="text-slate-200">arquitectura de microservicios</span>
+                                    desacoplada.</li>
+                                <li class="flex items-start"><span class="text-brand-400 mr-2">>></span> Implementación
+                                    de <span class="text-slate-200">Quality Gates</span> en GitLab CI/CD con SonarQube.
+                                </li>
+                                <li class="flex items-start"><span class="text-brand-400 mr-2">>></span> Diseño de APIs
+                                    RESTful con Java 17+ garantizando alta disponibilidad.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Amazing View -->
+                    <div id="view-amazing" class="hidden space-y-6">
+                        <div class="glass-card p-6 rounded-lg border border-dark-800">
+                            <h4 class="text-xs font-mono text-slate-500 mb-6 uppercase">RPA Impact Analysis</h4>
+                            <div class="chart-container h-64">
+                                <canvas id="amazingRpaChart"></canvas>
+                            </div>
+                            <p
+                                class="text-sm text-slate-500 mt-6 italic p-4 bg-dark-950 border-l-2 border-accent-warning">
+                                Automatización de procesos manuales mediante UiPath, liberando recursos críticos para
+                                tareas de arquitectura.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: EDUCATION -->
+        <section id="section-education" class="p-6 md:p-16 max-w-5xl mx-auto hidden animate-fade-in">
+            <h2 class="text-3xl font-bold text-white mb-10 tracking-tight">Academic Records</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                <div class="glass-card p-6 rounded-xl border-l-4 border-l-brand-600">
+                    <p class="text-[10px] font-mono text-brand-500 mb-2">UNIVERSIDAD SANTA MARÍA</p>
+                    <h3 class="text-xl font-bold text-white">Ingeniería en Sistemas</h3>
+                    <div class="flex justify-between items-center mt-6">
+                        <span class="text-xs bg-brand-500/10 text-brand-400 px-2 py-1 rounded">6to Semestre
+                            (Actual)</span>
+                        <span class="text-[10px] text-slate-500">EST. 2023 - PRESENTE</span>
+                    </div>
+                </div>
+                <div class="glass-card p-6 rounded-xl border-l-4 border-l-slate-700">
+                    <p class="text-[10px] font-mono text-slate-500 mb-2">FUNDACIÓN CARLOS DELFINO</p>
+                    <h3 class="text-xl font-bold text-white">Técnico Medio en Informática</h3>
+                    <div class="flex justify-between items-center mt-6">
+                        <span class="text-xs bg-slate-800 text-slate-400 px-2 py-1 rounded">Graduado</span>
+                        <span class="text-[10px] text-slate-500">2016 - 2019</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="text-sm font-mono text-slate-500 uppercase tracking-widest mb-6">Certificaciones Verificadas</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div
+                    class="p-4 border border-dark-800 rounded bg-dark-900/50 group hover:border-brand-500/50 transition-colors">
+                    <i class="fa-brands fa-java text-2xl text-slate-600 group-hover:text-brand-400 mb-3 block"></i>
+                    <h4 class="text-xs font-bold text-slate-200">Java Academy Master</h4>
+                </div>
+                <div
+                    class="p-4 border border-dark-800 rounded bg-dark-900/50 group hover:border-accent-success/50 transition-colors">
+                    <i
+                        class="fa-solid fa-users-viewfinder text-2xl text-slate-600 group-hover:text-accent-success mb-3 block"></i>
+                    <h4 class="text-xs font-bold text-slate-200">Scrum Master Pro</h4>
+                </div>
+                <div
+                    class="p-4 border border-dark-800 rounded bg-dark-900/50 group hover:border-accent-warning/50 transition-colors">
+                    <i class="fa-solid fa-robot text-2xl text-slate-600 group-hover:text-accent-warning mb-3 block"></i>
+                    <h4 class="text-xs font-bold text-slate-200">RPA UiPath Adv</h4>
+                </div>
+                <div
+                    class="p-4 border border-dark-800 rounded bg-dark-900/50 group hover:border-brand-400/50 transition-colors">
+                    <i class="fa-brands fa-node-js text-2xl text-slate-600 group-hover:text-brand-400 mb-3 block"></i>
+                    <h4 class="text-xs font-bold text-slate-200">Bootcamp Node.js</h4>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const state = {
+            activeSection: 'profile',
+            activeJob: 'itbc',
+            charts: {},
+            initialized: false
+        };
+
+        function navigate(id) {
+            state.activeSection = id;
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(`section-${id}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(`nav-${id}`).classList.add('active');
+
+            if ((id === 'skills' || id === 'experience') && !state.initialized) {
+                setTimeout(initCharts, 100);
+                state.initialized = true;
+            }
+        }
+
+        function toggleMobileMenu() {
+            const m = document.getElementById('mobile-menu');
+            m.classList.toggle('hidden');
+        }
+
+        function showJob(id) {
+            state.activeJob = id;
+            document.querySelectorAll('.job-card').forEach(c => {
+                c.classList.remove('border-brand-500/50', 'shadow-[0_0_15px_rgba(14,165,233,0.1)]', 'opacity-100');
+                c.classList.add('opacity-60', 'border-dark-800');
+            });
+            const active = document.getElementById(`card-${id}`);
+            active.classList.add('border-brand-500/50', 'shadow-[0_0_15px_rgba(14,165,233,0.1)]', 'opacity-100');
+            active.classList.remove('opacity-60', 'border-dark-800');
+
+            document.getElementById('view-itbc').classList.add('hidden');
+            document.getElementById('view-amazing').classList.add('hidden');
+            document.getElementById(`view-${id}`).classList.remove('hidden');
+        }
+
+        function initCharts() {
+            const gridColor = 'rgba(51, 65, 85, 0.3)';
+            const textColor = '#94a3b8';
+
+            // Radar
+            new Chart(document.getElementById('skillsRadarChart'), {
+                type: 'radar',
+                data: {
+                    labels: ['Java Spring', 'DevSecOps', 'Arquitectura', 'Testing', 'RPA', 'Soft Skills'],
+                    datasets: [{
+                        data: [95, 90, 85, 80, 75, 88],
+                        backgroundColor: 'rgba(14, 165, 233, 0.1)',
+                        borderColor: '#0ea5e9',
+                        pointBackgroundColor: '#0ea5e9',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            grid: { color: gridColor },
+                            angleLines: { color: gridColor },
+                            pointLabels: { color: textColor, font: { family: 'JetBrains Mono', size: 10 } },
+                            ticks: { display: false },
+                            suggestedMin: 0
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // Latency
+            new Chart(document.getElementById('itbcLatencyChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Legacy', 'Cloud Native'],
+                    datasets: [{
+                        label: 'ms',
+                        data: [420, 115],
+                        backgroundColor: ['rgba(51, 65, 85, 0.5)', '#10b981'],
+                        borderRadius: 2
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { grid: { color: gridColor }, ticks: { color: textColor } },
+                        x: { grid: { display: false }, ticks: { color: textColor } }
+                    }
+                }
+            });
+
+            // Quality
+            new Chart(document.getElementById('itbcQualityChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Tested', 'Untested'],
+                    datasets: [{
+                        data: [85, 15],
+                        backgroundColor: ['#0ea5e9', '#0f172a'],
+                        borderColor: '#1e293b',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    cutout: '80%',
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // RPA
+            new Chart(document.getElementById('amazingRpaChart'), {
+                type: 'bar',
+                indexAxis: 'y',
+                data: {
+                    labels: ['Manual Flow', 'Automated Flow'],
+                    datasets: [{
+                        data: [100, 15],
+                        backgroundColor: ['rgba(51, 65, 85, 0.5)', '#f59e0b'],
+                        borderRadius: 2
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { color: gridColor }, ticks: { color: textColor } },
+                        y: { grid: { display: false }, ticks: { color: textColor } }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
